@@ -18,7 +18,6 @@ class RegisterSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(max_length=30, min_length=5,
                                    help_text='name should contain only alphanumeric characters')
     name = serializers.CharField(max_length=30, min_length=2)
-    course = serializers.ListField(child=serializers.CharField(max_length=25))
 
     class Meta:
         model = User

@@ -20,9 +20,9 @@ class MentorReviewSerializer(serializers.ModelSerializer):
 
 class MentorSerializer(WritableNestedModelSerializer, serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
-    skils = serializers.ListField(child=serializers.CharField(max_length=25))
+    skils = serializers.ListSerializer(child=serializers.CharField(max_length=25))
     worktimes = WorkTimesSerializer()
-    language = serializers.ListField(child=serializers.CharField(max_length=25))
+    language = serializers.ListSerializer(child=serializers.CharField(max_length=25))
 
     class Meta:
         model = Mentor
@@ -67,7 +67,7 @@ class MentorListsSerializer(WritableNestedModelSerializer, serializers.ModelSeri
 
 class MentorDetailSerializer(WritableNestedModelSerializer, serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
-    skils = serializers.ListField(child=serializers.CharField(max_length=25))
+    skils = serializers.ListSerializer(child=serializers.CharField(max_length=25))
     worktimes = WorkTimesSerializer()
     review = MentorReviewSerializer(many=True)
 
