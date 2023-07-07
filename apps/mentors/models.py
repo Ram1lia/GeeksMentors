@@ -31,7 +31,7 @@ class Mentor(models.Model):
     tel = models.URLField()
     course = models.CharField(max_length=255)
     month = models.CharField(max_length=255)
-    language = ArrayField(models.CharField(max_length=20, choices=LANGUAGE_CHOICES))
+    language = ArrayField(models.CharField(max_length=20))
     skils = ArrayField(models.CharField(max_length=25))
     worktimes = models.ForeignKey(WorkTimes, on_delete=models.CASCADE)
     time_create = models.DateTimeField(auto_now_add=True, null=True)

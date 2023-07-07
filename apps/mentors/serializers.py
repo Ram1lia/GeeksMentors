@@ -46,14 +46,14 @@ class MentorSerializer(WritableNestedModelSerializer, serializers.ModelSerialize
 
         return skils
 
-        def create(self, validated_data):
-            user_data = self.context['request'].user  # Извлекаем данные пользователя из запроса
+    def create(self, validated_data):
+        user_data = self.context['request'].user  # Извлекаем данные пользователя из запроса
 
-            validated_data['user'] = user_data
-            validated_data['course'] = user_data.course
-            validated_data['month'] = user_data.month
+        validated_data['user'] = user_data
+        validated_data['course'] = user_data.course
+        validated_data['month'] = user_data.month
 
-            return super().create(validated_data)
+        return super().create(validated_data)
 
 
 class MentorListsSerializer(WritableNestedModelSerializer, serializers.ModelSerializer):
