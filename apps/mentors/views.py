@@ -28,6 +28,7 @@ class MentorCreateAPIView(CreateAPIView):
     queryset = Mentor.objects.filter(is_active=True)
     pagination_class = PageNumberPagination
     permission_classes = (IsAuthenticated,)
+    serializer_class = MentorSerializer
 
     def post(self, request, *args, **kwargs):
         user = request.user
@@ -49,7 +50,7 @@ class MentorCreateAPIView(CreateAPIView):
             'language': request.data['language']
         }
 
-        serializer = MentorSerializer(data=mentor_data)
+        serializer = self.serializer_class(data=mentor_data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=201)

@@ -20,9 +20,9 @@ class MentorReviewSerializer(serializers.ModelSerializer):
 
 class MentorSerializer(WritableNestedModelSerializer, serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
-    skils = serializers.ListSerializer(child=serializers.CharField(max_length=25))
+    skils = serializers.ListField(child=serializers.CharField(max_length=25))
     worktimes = WorkTimesSerializer()
-    language = serializers.ListSerializer(child=serializers.CharField(max_length=25))
+    language = serializers.ListField(child=serializers.CharField(max_length=25))
 
     class Meta:
         model = Mentor
@@ -35,8 +35,9 @@ class MentorSerializer(WritableNestedModelSerializer, serializers.ModelSerialize
             raise ValidationError('The name must contain only letters')
         return name
 
-    def validate_skils(self, skils):
-        if len(skils) != 0:
+    @staticmethod
+    def validate_skils(skils):
+        if len(skils) == 0:
             raise serializers.ValidationError(f'Mentor must have at least one skill')
 
         for value in skils:
@@ -47,11 +48,12 @@ class MentorSerializer(WritableNestedModelSerializer, serializers.ModelSerialize
         return skils
 
     def create(self, validated_data):
-        user_data = self.context['request'].user  # Извлекаем данные пользователя из запроса
-
-        validated_data['user'] = user_data
-        validated_data['course'] = user_data.course
-        validated_data['month'] = user_data.month
+        request = self.context.get('request')
+        if request:
+            user_data = request.user  # Извлекаем данные пользователя из запроса
+            validated_data['user'] = user_data
+            validated_data['course'] = user_data.course
+            validated_data['month'] = user_data.month
 
         return super().create(validated_data)
 
@@ -67,7 +69,7 @@ class MentorListsSerializer(WritableNestedModelSerializer, serializers.ModelSeri
 
 class MentorDetailSerializer(WritableNestedModelSerializer, serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
-    skils = serializers.ListSerializer(child=serializers.CharField(max_length=25))
+    skils = serializers.ListField(child=serializers.CharField(max_length=25))
     worktimes = WorkTimesSerializer()
     review = MentorReviewSerializer(many=True)
 
