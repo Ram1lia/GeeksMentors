@@ -22,25 +22,18 @@ class MentorSerializer(WritableNestedModelSerializer, serializers.ModelSerialize
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
     skils = serializers.ListField(child=serializers.CharField(max_length=25))
     worktimes = WorkTimesSerializer()
-    name = serializers.CharField(max_length=20)
-    tel = serializers.URLField()
+    language = serializers.ListField(child=serializers.CharField(max_length=25))
 
     class Meta:
         model = Mentor
         fields = ['id', 'name', 'course', 'month', 'tel', 'language', 'about', 'skils', 'worktimes', 'user',
                   'like', 'dislike']
 
-    # list_data = [name]
-    # for data in list_data:
-    #     if not data.exists():
-    #         raise serializers.ValidationError('This is must form')
-
     @staticmethod
     def validate_name(name):
         if not name.isalpha():
             raise ValidationError('The name must contain only letters')
         return name
-
 
     def validate_skils(self, skils):
         if len(skils) != 0:

@@ -32,10 +32,10 @@ class MentorCreateAPIView(CreateAPIView):
     def post(self, request, *args, **kwargs):
         user = request.user
 
-        list_data = [request.data['name']]
-        for data in list_data:
-            if not data.exists():
-                raise ValueError('This is must form')
+        required_fields = ['name', 'tel', 'about', 'skils', 'worktimes', 'language']
+        for field in required_fields:
+            if field not in request.data:
+                return Response({'error': f"The field '{field}' is required."}, status=status.HTTP_400_BAD_REQUEST)
 
         mentor_data = {
             'user': user.id,
