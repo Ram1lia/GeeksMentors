@@ -16,19 +16,18 @@ from apps.users.serializers import PersonalProfileSerializer
 from rest_framework import status
 
 
-class MentorListAPIView(ListAPIView):
+class MentorAPIVIew(ListCreateAPIView):
     queryset = Mentor.objects.filter(is_active=True).annotate(like_count=Count('likes')).order_by('-like_count')
-    serializer_class = MentorListsSerializer
     pagination_class = PageNumberPagination
+    permission_classes = (IsAuthenticated,)
     filter_backends = (DjangoFilterBackend,)
     filterset_class = MentorFilter
 
-
-class MentorCreateAPIView(CreateAPIView):
-    queryset = Mentor.objects.filter(is_active=True)
-    pagination_class = PageNumberPagination
-    permission_classes = (IsAuthenticated,)
-    serializer_class = MentorSerializer
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return MentorListsSerializer
+        elif self.request.method == 'POST':
+            return MentorSerializer
 
     def post(self, request, *args, **kwargs):
         user = request.user
@@ -50,7 +49,7 @@ class MentorCreateAPIView(CreateAPIView):
             'language': request.data['language']
         }
 
-        serializer = self.serializer_class(data=mentor_data, context={'request': request})
+        serializer = self.get_serializer_class()(data=mentor_data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=201)

@@ -38,7 +38,6 @@ class Mentor(models.Model):
     time_update = models.DateTimeField(auto_now=True, null=True)
     likes = models.ManyToManyField(User, blank=True, related_name='likes')
     dislikes = models.ManyToManyField(User, blank=True, related_name='dislikes')
-    is_mentor = models.BooleanField(default=False)
 
     @property
     def like(self):
