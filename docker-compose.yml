@@ -1,0 +1,39 @@
+version: '3.3'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: geeksmentor
+    restart: always
+    command: sh -c "python manage.py makemigrations && python manage.py migrate && python manage.py collectstatic
+        --no-input && gunicorn -b 0.0.0.0:8088 core.wsgi --reload"
+    volumes:
+      - static_volume:/home/app/web/staticfiles
+      - media_volume:/home/app/web/mediafiles
+    expose:
+      - 8199
+    depends_on:
+      - db
+  db:
+    image: postgres:latest
+    container_name: mentor
+    restart: always
+    ports:
+      - '5535:5432'
+    volumes:
+      - 'postgres_data:/var/lib/postgresql/data'
+    env_file:
+      - ./.env
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+    depends_on:
+      - web
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:
