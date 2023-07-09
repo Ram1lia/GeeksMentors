@@ -57,6 +57,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     email = models.EmailField(max_length=255, unique=True, db_index=True)
     name = models.CharField(max_length=255, unique=True, db_index=True)
+    image = models.ImageField(blank=True, default="mentors / default.jpg")
     course = models.CharField(choices=COURSE_CHOICES, max_length=255)
     month = models.CharField(choices=MONTH_CHOICES, max_length=255)
     password = models.CharField(max_length=255)
