@@ -221,7 +221,7 @@ DATABASES = {
         'USER': 'mentor_user',
         'PASSWORD': '772007',
         'PORT': 5432,
-        'HOST': '127.0.0.1'
+        'HOST': 'db'
     }
 }
 
