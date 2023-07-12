@@ -1,20 +1,14 @@
 FROM python:3.10
 
-RUN mkdir /app
-RUN mkdir /app/staticfiles
-RUN mkdir /app/mediafiles
-ENV app=/app/web
-WORKDIR /app/
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-RUN pip install --upgrade pip
 
-COPY requirements.txt .
+WORKDIR /mentor
 
-RUN pip install -r requirements.txt
+COPY ./requirements.txt /mentor/
 
-COPY . /app
+RUN pip install -r /mentor/requirements.txt
 
-CMD ["python", "manage.py runserver"]
+ADD . /mentor
