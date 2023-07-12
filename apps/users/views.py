@@ -33,7 +33,7 @@ class RegisterView(generics.GenericAPIView):
         user_data = serializer.data
         user = User.objects.get(email=user_data['email'])
         token = RefreshToken.for_user(user).access_token
-        current_site = '127.0.0.1:8000'
+        current_site = '18.210.80.239:8000'
         relative_link = reverse('email-verify')
         absurl = 'http://' + current_site + relative_link + "?token=" + str(token)
         email_body = 'Здравствуйте ' + user.name.title() + '! ' + ' Используйте ссылку ниже, чтобы подтвердить ' \
