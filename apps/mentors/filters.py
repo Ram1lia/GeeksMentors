@@ -6,7 +6,8 @@ class MentorFilter(filters.FilterSet):
     course = filters.CharFilter()
     month = filters.CharFilter()
     skils = filters.CharFilter()
+    language = filters.CharFilter()
 
     class Meta:
         model = Mentor
-        fields = ['course', 'month', 'skils']
+        fields = ['course', 'month', 'skils', 'language']
